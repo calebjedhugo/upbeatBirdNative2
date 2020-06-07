@@ -1,8 +1,5 @@
-import Sound from 'react-native-sound'
-Sound.setCategory('Playback')
 import Instrument from './Instrument'
 
-//We need to create a class that the drum, bass, and bird all extend.
 export default class DrumLogic extends Instrument{
   constructor(props){
     super({

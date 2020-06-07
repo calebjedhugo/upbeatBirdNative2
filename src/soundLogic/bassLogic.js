@@ -1,23 +1,18 @@
-import Sound from 'react-native-sound'
+import Instrument from './Instrument'
 
-export default class BassLogic{
-  constructor(props){
+export default class BassLogic extends Instrument{
+  constructor(){
+    let sounds = []
+    for(let i = 0; i < 21; i++){
+      sounds.push(`bass${i + 1}`)
+    }
+    super({sounds: sounds})
     this.bassNote = 5;
     this.offset = this.randomIdx([0,1,2,3,4,5,6])
-    this.primed = false
-    this.sounds = {
-      bass1: undefined, bass2: undefined, bass3: undefined, bass4: undefined,
-      bass5: undefined, bass6: undefined, bass7: undefined, bass8: undefined,
-      bass9: undefined, bass10: undefined, bass11: undefined, bass12: undefined,
-      bass13: undefined, bass14: undefined, bass15: undefined, bass16: undefined,
-      bass17: undefined, bass18: undefined, bass19: undefined, bass20: undefined,
-      bass21: undefined
-    }
-    this.primeSounds()
   }
 
   play = () => {
-    this.sounds[this.bassLogic()].play()
+    this.realPlay(this.bassLogic())
   }
 
   // returns the name of a file that will sound nice based on what came before.
@@ -79,29 +74,5 @@ export default class BassLogic{
 
   randomIdx(theArray){
       return theArray[Math.floor(theArray.length * Math.random())];
-  }
-
-  primeSounds = () => {
-    for(let sound in this.sounds){
-      this.sounds[sound] = new Sound(`sounds/${sound}.mp3`, Sound.MAIN_BUNDLE, e => {
-        if(e) console.log(e)
-      })
-    }
-
-    this.primed = true
-  }
-
-  ready = async () => {
-    return new Promise(resolve => {
-      if(this.primed) resolve()
-      else{
-        this.primedWait = setInterval(() => {
-          if(this.primed){
-            clearInterval(this.primedWait)
-            resolve()
-          }
-        }, 500)
-      }
-    })
   }
 }

@@ -11,7 +11,7 @@ const windowWidth = Dimensions.get('window').width
 export default class InGameUI extends Component {
   constructor(props){
     super(props)
-    this.bpmMin = 56
+    this.bpmMin = 100
     this.goingUp = false
     this.state = {
       frame: 0, // ++ every animation frame.

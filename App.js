@@ -26,7 +26,6 @@ export default class App extends Component {
     this.drum = new DrumLogic({mode: 'straight'})
     this.switchScreenTimeout = undefined;
     this.waitCount = 0;
-    console.log('test')
   }
 
   componentDidUpdate(prevProps){

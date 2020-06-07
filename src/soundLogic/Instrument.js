@@ -10,12 +10,12 @@ export default class Instrument {
       this.sounds[elem] = {sounds: [], nextIndex: 0}
     })
     this.primeSounds()
-    console.log('test')
   }
 
+  //Make three copies of each sound so that they are more responsive.
   primeSounds = () => {
     for(let sound in this.sounds){
-      for(let i = 0; i < 1; i++){
+      for(let i = 0; i < 3; i++){
         this.sounds[sound].sounds[i] = new Sound(`sounds/${sound}.mp3`, Sound.MAIN_BUNDLE, e => {
           if(e) return console.log(e)
         })
@@ -27,7 +27,7 @@ export default class Instrument {
   realPlay = sound => {
     let {nextIndex} = this.sounds[sound]
     let srcLength = this.sounds[sound].sounds.length
-    // this.sounds[sound].sounds[nextIndex].play()
+    this.sounds[sound].sounds[nextIndex].play()
     this.sounds[sound].sounds[(nextIndex - 1 + srcLength) % srcLength].stop()
     this.sounds[sound].nextIndex = (nextIndex + 1) % srcLength
   }
