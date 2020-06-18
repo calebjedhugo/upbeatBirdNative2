@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Text, View, Dimensions, ImageBackground} from 'react-native'
+import {Text, View, Dimensions, ImageBackground, TouchableWithoutFeedback} from 'react-native'
 import Bird from './Bird'
 import JumpMeter from './JumpMeter'
 import Posts from './Posts'
@@ -11,14 +11,16 @@ const windowWidth = Dimensions.get('window').width
 export default class InGameUI extends Component {
   constructor(props){
     super(props)
-    this.bpmMin = 100
+    this.bpmMin = 56
     this.goingUp = false
     this.state = {
       frame: 0, // ++ every animation frame.
       perfectUpbeats: 0,
       postsCleared: 0,
       nextBeat: 0,
-      jumpPerc: 0
+      jumpPerc: 0,
+      started: false,
+      jumpTrigger: false
     }
   }
 
@@ -168,44 +170,44 @@ export default class InGameUI extends Component {
       // else requestAnimationFrame(this.endGame);
   }
 
-  state = {
-    started: false
-  }
-
   render() {
-    const {started, frame, jumpPerc} = this.state
+    const {started, frame, jumpPerc, jumpTrigger} = this.state
     const {score, highScore, inGameOpacity, highScoreLabelText, cyberBirdClip, birdDiameter, scoreLabel2Class, titleColor} = this.props
     return (
-      <View style={{
-        opacity: inGameOpacity,
-        width: windowWidth,
-        height: windowHeight
+      <TouchableWithoutFeedback onPress={() => {
+        this.setState({jumpTrigger: !jumpTrigger})
       }}>
-        <Bird {...this.state} start={() => this.setState({started: true})}/>
-        <View style={[styles.absoluteInFront, {right: '1.5%', marginTop: 20}]}>
-          <Text style={[
-            styles.absoluteInFront, {
-              color: titleColor,
-              width: .6 * windowWidth,
-              right: 0
-            }]
-          }>
-            {'BPM: '}
-            <Text style={[styles.inlineBlock]}>{this.bpm}</Text>
-          </Text>
-          <Text style={[{color: titleColor}]}>
-            {highScoreLabelText}
-            <Text style={[styles.inlineBlock, {
-              color: highScore < score ? '#000000' : '#D4AF37'
-            }]}>{highScore}</Text>
-          </Text>
-          <Text style={[{color: titleColor}, styles[scoreLabel2Class]]}>
-            {'Score: '}
-            <Text style={[styles.inlineBlock]}>{score}</Text>
-          </Text>
+        <View style={{
+          opacity: inGameOpacity,
+          width: windowWidth,
+          height: windowHeight
+        }}>
+          <Bird {...this.state} start={() => this.setState({started: true})}/>
+          <View style={[styles.absoluteInFront, {right: '1.5%', marginTop: 40}]}>
+            <Text style={[
+              styles.absoluteInFront, {
+                color: titleColor,
+                width: .6 * windowWidth,
+                right: 0
+              }]
+            }>
+              {'BPM: '}
+              <Text style={[styles.inlineBlock]}>{this.bpm}</Text>
+            </Text>
+            <Text style={[{color: titleColor}]}>
+              {highScoreLabelText}
+              <Text style={[styles.inlineBlock, {
+                color: highScore < score ? '#000000' : '#D4AF37'
+              }]}>{highScore}</Text>
+            </Text>
+            <Text style={[{color: titleColor}, styles[scoreLabel2Class]]}>
+              {'Score: '}
+              <Text style={[styles.inlineBlock]}>{score}</Text>
+            </Text>
+          </View>
+          <JumpMeter jumpPerc={jumpPerc}/>
         </View>
-        <JumpMeter jumpPerc={jumpPerc}/>
-      </View>
+      </TouchableWithoutFeedback>
     )
   }
 }

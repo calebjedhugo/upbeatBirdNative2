@@ -10,8 +10,12 @@ const windowWidth = Dimensions.get('window').width
 
 export default class Bird extends Component {
   componentDidUpdate(prevProps){
-    if(this.props.frame !== prevProps.frame){
+    const {frame, jumpTrigger} = this.props
+    if(frame !== prevProps.frame){
       this.advanceBirdFrame()
+    }
+    if(jumpTrigger !== prevProps.jumpTrigger){
+      this.jump()
     }
   }
 
@@ -155,8 +159,8 @@ export default class Bird extends Component {
     let imgBirdDom = this.imgBirdDom
     const ratios = this.ratios;
     // soundManager.piano.play(this.soundLogic.birdLogic()); //add dynamic volume level, plz!.
-    cyberBirdDom.fallingSpeed = ratios.jumpStrength; //this is the actual jumping part.
-    cyberBirdDom.jumpPrimed = true;
+    // cyberBirdDom.fallingSpeed = ratios.jumpStrength; //this is the actual jumping part.
+    // cyberBirdDom.jumpPrimed = true;
     this.setState({
       flapping: true,
       framesPerFlap: 24,
